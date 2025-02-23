@@ -1,0 +1,68 @@
+{%extends 'first/base.html' %}
+{% load static %}
+{% block title %} StockPicker {% endblock%}
+
+{% block content %}
+<div class="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen flex items-center justify-center p-6">
+    <div class="bg-white bg-opacity-20 backdrop-blur-lg p-6 rounded-2xl shadow-lg w-full max-w-4xl">
+        
+        <!-- Title -->
+        <h1 class="text-3xl font-extrabold text-white text-center mb-4 drop-shadow-lg">STOCK COMPANY</h1>
+        
+        <!-- Subheading -->
+        <h2 class="text-lg text-white text-center font-semibold mb-4">Select Your Stock Company</h2>
+        
+        <!-- Search Bar -->
+        <div class="relative w-full max-w-sm mx-auto mb-6">
+            <input type="text" id="searchBox" placeholder="Search rows..." class="w-full p-3 rounded-lg shadow-md border-none bg-white text-gray-700 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+        </div>
+        
+        <!-- Table -->
+        <form method="POST" action="{%url 'stockpicker' %}">
+            {% csrf_token %}
+            
+            <div class="overflow-hidden rounded-lg shadow-lg">
+                <table class="w-full bg-white rounded-lg overflow-hidden text-gray-700">
+                    <thead>
+                        <tr class="bg-blue-500 text-white">
+                            <th class="p-4">#</th>
+                            <th class="p-4">Stock Name</th>
+                            <th class="p-4">Select</th> 
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="max-h-96 overflow-y-auto">
+                        {% for stock in stock_picker %}
+                        <tr class="border-b hover:bg-blue-100 transition cursor-pointer">
+                            <td class="p-4 text-center">{{ forloop.counter }}</td>
+                            <td class="p-4">{{ stock }}</td>
+                            <td class="p-4 text-center">
+                                <input type="checkbox" name="selected_stocks" value="{{ stock }}" class="form-checkbox">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+            <!-- Sticky Submit Button -->
+            <div class="fixed bottom-0 left-0 w-full bg-white shadow-lg p-4 text-center flex flex-col gap-2">
+                <!-- Submit Button -->
+                <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Submit
+                </button>
+                
+                <!-- Link Container -->
+                <a href="{% url 'stocktracker' %}" class="block bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                    Visualize Your Stock
+                </a>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<link rel="stylesheet" href="{% static 'css/stock.css' %}">
+<script src="https://cdn.tailwindcss.com"></script>
+
+{% endblock %}
+
