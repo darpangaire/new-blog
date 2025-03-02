@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'post',
     'stockmarket',
+    'django_celery_results',
+    'django_celery_beat',
+    'channels',
     
 ]
 
@@ -73,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'blog.wsgi.application'
+ASGI_APPLICATION = "blog.asgi.application"
 
 
 # Database
@@ -133,4 +137,14 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# Celery Settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use Redis as broker
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_IMPORTS = ('stockmarket.tasks',)
+CELERY_TIMEZONE = 'Asia/Kathmandu'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 

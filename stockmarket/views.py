@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from yahoo_fin.stock_info import *
 from django.urls import reverse
 from yahooquery import Ticker
+from .tasks import update_stock_prices
 
 # Create your views here.
 def stockpicker_post(request):
@@ -11,7 +12,8 @@ def stockpicker_post(request):
     selected_stocks = request.POST.getlist('selected_stocks')
     request.session['selected_stocks'] = selected_stocks
     request.session.modified = True
-    print(selected_stocks)
+    update_stock_prices.apply_async(args=(selected_stocks,))
+    #print(selected_stocks)
     return redirect(reverse('stocktracker'))
     
   #print(stock_picker)
@@ -30,7 +32,7 @@ def stocktracker_post(request: HttpRequest):
       stocks = Ticker(selected_stocks)
       price_data = stocks.price
       summary_data = stocks.summary_detail
-
+      
       for stock in selected_stocks:
           try:
               stock_info = price_data.get(stock, {})
