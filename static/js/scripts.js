@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  gsap.from(".title", {opacity: 0, y: -50, duration: 1});
-  gsap.from(".card", {opacity: 0, y: 50, duration: 1, stagger: 0.3});
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   gsap.from(".title", {opacity: 0, y: -50, duration: 1});
+//   gsap.from(".card", {opacity: 0, y: 50, duration: 1, stagger: 0.3});
+// });
 
 document.addEventListener("DOMContentLoaded", function() {
   const articles = document.querySelectorAll(".editor-article");

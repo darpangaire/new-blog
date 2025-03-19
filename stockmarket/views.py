@@ -4,59 +4,57 @@ from yahoo_fin.stock_info import *
 from django.urls import reverse
 from yahooquery import Ticker
 from .tasks import update_stock_prices
+from concurrent.futures import ThreadPoolExecutor
 
 # Create your views here.
+
+
 def stockpicker_post(request):
   stock_picker = tickers_nifty50()
   if request.method == 'POST':
     selected_stocks = request.POST.getlist('selected_stocks')
+    # print(selected_stocks)
     request.session['selected_stocks'] = selected_stocks
-    request.session.modified = True
-    update_stock_prices.apply_async(args=(selected_stocks,))
-    #print(selected_stocks)
-    return redirect(reverse('stocktracker'))
-    
+    return redirect('stocktracker')
+
   #print(stock_picker)
   return render(request,'stock/stockpicker.html',{'stock_picker':stock_picker})
 
+
 def stocktracker_post(request: HttpRequest):
-  try:
-      selected_stocks = request.session.get('selected_stocks', [])
-  except:
-      selected_stocks = []
+  selected_stocks = request.session.get('selected_stocks', []) or []
 
   stock_data = []
   
   if selected_stocks:
-      # Fetch data for all selected stocks in one API call
-      stocks = Ticker(selected_stocks)
-      price_data = stocks.price
-      summary_data = stocks.summary_detail
+    with ThreadPoolExecutor(max_workers=5) as executor:
+      results = list(executor.map(fetch_data,selected_stocks))
       
-      for stock in selected_stocks:
-          try:
-              stock_info = price_data.get(stock, {})
-              summary_info = summary_data.get(stock, {})
+    stock_data = [data for data in results if data]
+    print(stock_data)
 
-              stock_details = {
-                'name': stock_info.get('shortName', stock),  # Stock name
-                'price': stock_info.get('regularMarketPrice', 'N/A'),  # Live price
-                'previous_close':stock_info.get('regularMarketPreviousClose','N/A'),
-                'open':stock_info.get('regularMarketPreviousClose','N/A'),
-                'day_high': stock_info.get('regularMarketDayHigh', 'N/A'),  # Day high
-                  'day_low': stock_info.get('regularMarketDayLow', 'N/A'),
-                'market_cap': summary_info.get('marketCap', 'N/A'),  # Market cap
-                'volume': stock_info.get('regularMarketVolume', 'N/A'),  # Trading volume
-              }
-
-              stock_data.append(stock_details)
-          except Exception as e:
-              print(f"Error fetching data for {stock}: {e}")
-
-  return render(request, 'stock/stocktracker.html', {'stock_data': stock_data})
+  return render(request, 'stock/stocktracker.html', {'stock_data': stock_data, 'room_name': 'track'})
 
 
 
+def fetch_data(stock_symbol):
+    try:
+        stock = Ticker(stock_symbol)  # ✅ Initialize the ticker object
+        price_data = stock.price.get(stock_symbol, {})  # ✅ Fetch price data using the symbol
+        summary_data = stock.summary_detail.get(stock_symbol, {})
 
-
+        return {
+            'name': price_data.get('shortName', stock_symbol),  # ✅ Get the stock name correctly
+            'price': price_data.get('regularMarketPrice', 'N/A'),
+            'previous_close': price_data.get('regularMarketPreviousClose', 'N/A'),
+            'open': price_data.get('regularMarketOpen', 'N/A'),
+            'day_high': price_data.get('regularMarketDayHigh', 'N/A'),
+            'day_low': price_data.get('regularMarketDayLow', 'N/A'),
+            'market_cap': summary_data.get('marketCap', 'N/A'),
+            'volume': price_data.get('regularMarketVolume', 'N/A'),
+        }
+  
+    except Exception as e:
+        print(f"Error fetching data for {stock_symbol}: {e}")
+        return None  # Return None if there's an error
 

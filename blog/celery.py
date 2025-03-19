@@ -14,11 +14,11 @@ app.config_from_object('django.conf:settings',
 
 # Load task modules from all registered Django app configs.
 app.conf.beat_schedule = {
-  'every_10_seconds':{
-    'task':'stockmarket.tasks.update_stock_prices',
-    'schedule':10,
-    'args':(),
-  },
+  # 'every_10_seconds':{
+  #   'task':'stockmarket.tasks.update_stock_prices',
+  #   'schedule':10,
+  #   'args':(),
+  # },
 }
 
 # Auto-discover tasks
