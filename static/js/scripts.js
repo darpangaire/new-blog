@@ -84,18 +84,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // stock code
 
-document.getElementById("searchBox").addEventListener("input", function() {
-  let filter = this.value.toLowerCase();
-  let rows = document.querySelectorAll("#tableBody tr");
-  rows.forEach(row => {
-      let text = row.textContent.toLowerCase();
-      if (text.includes(filter)) {
-          row.style.display = "table-row";
-      } else {
-          row.style.display = "none";
-      }
-  });
-});
+// document.getElementById("searchBox").addEventListener("input", function() {
+//   let filter = this.value.toLowerCase();
+//   let rows = document.querySelectorAll("#tableBody tr");
+//   rows.forEach(row => {
+//       let text = row.textContent.toLowerCase();
+//       if (text.includes(filter)) {
+//           row.style.display = "table-row";
+//       } else {
+//           row.style.display = "none";
+//       }
+//   });
+// });
 
 
 

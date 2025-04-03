@@ -45,32 +45,45 @@
 
 
 
-{{ room_name|json_script:"room_name" }} 
+{{ room_name|json_script:"room-name" }}
+
 <script>
-    const roomName = JSON.parse(document.getElementById('room-name').textContent);
-    var querystring = window.location.search;
-    querystring = querystring.substring(1);
-    console.log(querystring)
+    // Ensure the 'room-name' element exists before accessing it
+    const roomNameElement = document.getElementById('room-name');
+    if (!roomNameElement) {
+        console.error("room-name element not found!");
+    } else {
+        const roomName = JSON.parse(roomNameElement.textContent);
 
-    const stocksocket = new WebSocket(
-        "ws://"
-        + window.location.host
-        + "/ws/stockmarket/"
-        + roomName
-        + "/"
-        + "?"
-        + querystring
+        // Get query string safely
+        const params = new URLSearchParams(window.location.search);
+        const querystring = params.toString();
 
-    );
+        // Use secure WebSocket protocol if the page is served over HTTPS
+        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+        
+        // Create WebSocket connection
+        const stocksocket = new WebSocket(
+            protocol + window.location.host + "/ws/stockmarket/" + roomName + "/?" + querystring
+        );
 
-    stocksocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        document.querySelector("#chat-log").value += data.message + "\n";
-    };
+        // Handle incoming messages
+        stocksocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector("#chat-log");
+            if (chatLog) {
+                chatLog.textContent += data.message + "\n";
+            } else {
+                console.error("#chat-log element not found!");
+            }
+        };
 
-    stocksocket.onclose = function(e) {
-        console.error("Chat socket closed unexpectedly");
-    };
+        // Handle socket closure and attempt reconnect
+        stocksocket.onclose = function(e) {
+            console.error("Chat socket closed unexpectedly, attempting to reconnect...");
+            setTimeout(() => location.reload(), 3000); // Auto-reconnect after 3 seconds
+        };
+    }
 </script>
 <link rel="stylesheet" href="{% static 'css/stock.css' %}">
 <script src="https://cdn.tailwindcss.com"></script>
