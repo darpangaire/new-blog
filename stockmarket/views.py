@@ -31,7 +31,7 @@ def stocktracker_post(request: HttpRequest):
       results = list(executor.map(fetch_data,selected_stocks))
       
     stock_data = [data for data in results if data]
-    print(stock_data)
+    #print(stock_data)
 
   return render(request, 'stock/stocktracker.html', {'stock_data': stock_data, 'room_name': 'track'})
 

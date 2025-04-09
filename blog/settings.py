@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +45,6 @@ INSTALLED_APPS = [
     'stockmarket',
     'django_celery_results',
     'django_celery_beat',
-    'channels',
     
 ]
 
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'blog.wsgi.application'
+#WSGI_APPLICATION = 'blog.wsgi.application'
 ASGI_APPLICATION = "blog.asgi.application"
 
 

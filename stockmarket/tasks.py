@@ -2,6 +2,9 @@ from celery import shared_task
 from yahooquery import Ticker
 from django.core.cache import cache
 import logging
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 logger = logging.getLogger(__name__)
 
@@ -58,5 +61,21 @@ def update_stock_prices(selected_stocks=None, *args, **kwargs):
             logger.error(f"Error fetching stock data from API: {e}")
             return f"API error: {e}"
 
+    try:
+        channel_layer = get_channel_layer()
+        for stock,data in stock_data.items():
+            group_name = f"chat_{stock}"
+            async_to_sync(channel_layer.group_send)(
+                group_name,
+                {
+                    "type":stock.update,
+                    "message":data 
+                }
+            )
+    except Exception as e:
+        logger.error(f"Error sending WebSocket update: {e}")
+        
+    
+    
     return f"Updated prices for {len(stock_data)} stocks"
 
