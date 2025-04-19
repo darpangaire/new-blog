@@ -1,0 +1,95 @@
+{% extends 'first/base.html' %} 
+{%load static %} 
+{%block title%} {{posts.categories}} {% endblock %} 
+{%block content%}
+<script src="https://cdn.tailwindcss.com"></script>
+
+<body class="bg-gray-50 text-gray-800">
+ <!-- Blog Content -->
+ <main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+
+    <section class="md:col-span-2 space-y-6">
+      <article class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-bold mb-2">{{post.title}}</h2>
+        <p class="text-gray-700 mb-4">{{post.short_description}}</p>
+      </article>
+
+      <article class="bg-white p-6 rounded shadow">
+        <h3 class="text-lg font-bold mb-2">{{post.title}}</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <img
+            src="{{ post.blog_image.url }}"
+            alt="Blog Image"
+            class="w-full h-64 object-cover"
+          />
+        </div>
+        <br>
+        <p class="text-gray-700 mb-4">{{post.body}}</p>
+      </article>
+
+      <article class="bg-white p-6 rounded shadow">
+        <h3 class="text-lg font-bold mb-2">conclusion</h3>
+        <p class="text-gray-700 mb-4">{{post.conclusion}}</p>
+      </article>
+
+      <!-- Additional Posts can go here -->
+    </section>
+
+    <!-- Sidebar: Ads + Affiliate -->
+    <aside class="space-y-6">
+      <!-- Video Ad -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold mb-2">Sponsored Video</h3>
+        <video controls class="w-full rounded">
+          <source src="https://v1.pinimg.com/videos/mc/720p/a3/6b/b7/a36bb7bcebda8eb141d5c8baece62812.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Image Ads -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold mb-2">Sponsored Images</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <img src="https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Ad 1" class="rounded" />
+          <img src="https://i.pinimg.com/736x/93/36/e3/9336e3e0af68e15de8d52b34af7f6efe.jpg" alt="Ad 2" class="rounded" />
+          <img src="https://i.pinimg.com/474x/b8/f9/40/b8f940cfb9c0c09bc3e9d6de69dc76c0.jpg" alt="Ad 3" class="rounded" />
+          <img src="https://i.pinimg.com/736x/48/06/25/4806251f0878e58d3d9e7d02b743ee99.jpg" alt="Ad 4" class="rounded" />
+        </div>
+      </div>
+
+      <!-- Affiliate Marketing -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold mb-2">Affiliate Offers</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="https://i.pinimg.com/236x/04/ab/86/04ab86b5933539b8314f2801f9e613eb.jpg" class="text-blue-600 hover:underline"
+              >Affiliate Product 1</a
+            >
+          </li>
+          <li>
+            <a href="#" class="text-blue-600 hover:underline"
+              >Affiliate Product 2</a
+            >
+          </li>
+          <li>
+            <a href="#" class="text-blue-600 hover:underline"
+              >Affiliate Product 3</a
+            >
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+  function showContent(id) {
+    document.getElementById(id + '-content').classList.remove('hidden');
+  }
+
+  function closeContent(id) {
+    document.getElementById(id + '-content').classList.add('hidden');
+  }
+</script>
+
+{%endblock%}

@@ -1,34 +1,128 @@
-{%load static%}
- <!-- Top Navbar -->
- <div class="navbar">
-  <div class="search-box">
-      <input type="text" placeholder="Search...">
-      <i class="fa-solid fa-magnifying-glass"></i>
-  </div>
-  <div class="logo">
-      <h1>Blogly</h1>
-  </div>
-  <div class="btns">
-      <button class="btn-login">Login</button>
-      <button class="btn-subscribe">Subscribe</button>
-  </div>
-</div>
+<script src="https://cdn.tailwindcss.com"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
-<div class="white-line"></div>
+<!-- Navbar Component -->
+<nav class="bg-gray-900 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Left: Logo -->
+      <div class="flex items-center space-x-2">
+        <h1
+          class="text-2xl font-extrabold text-orange-500 uppercase tracking-wide"
+        >
+          Blogly
+        </h1>
+      </div>
 
-<!-- Navigation Links -->
-<nav class="menu">
-  <a href="{% url 'home' %}">Home</a>
-  <a href="{%url 'stockpicker'%}">Stock Market</a>
-  <a href="#">Technology</a>
-  <a href="#">Politics</a>
-  <a href="#">Automobile</a>
-  <a href="#">Health</a>
-  <a href="#">Interactive Session</a>
+      <!-- Center: Navigation -->
+      <div class="hidden md:flex space-x-6">
+        <a
+          href="{%url 'home'%}"
+          class="relative group text-sm font-medium hover:text-orange-400"
+        >
+          Home
+          <span
+            class="absolute left-0 bottom-0 w-0 h-0.5 bg-orange-400 transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="{%url 'stockpicker'%}"
+          class="relative group text-sm font-medium hover:text-orange-400"
+        >
+          Stock Market
+          <span
+            class="absolute left-0 bottom-0 w-0 h-0.5 bg-orange-400 transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="{% url 'category' category='technology' %}"
+          class="relative group text-sm font-medium hover:text-orange-400"
+        >
+          Technology
+          <span
+            class="absolute left-0 bottom-0 w-0 h-0.5 bg-orange-400 transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="{%url 'category' category='Politics' %}"
+          class="relative group text-sm font-medium hover:text-orange-400"
+        >
+          Politics
+          <span
+            class="absolute left-0 bottom-0 w-0 h-0.5 bg-orange-400 transition-all group-hover:w-full"
+          ></span>
+        </a>
+        <a
+          href="{%url 'category' category='Health' %}"
+          class="relative group text-sm font-medium hover:text-orange-400"
+        >
+          Health
+          <span
+            class="absolute left-0 bottom-0 w-0 h-0.5 bg-orange-400 transition-all group-hover:w-full"
+          ></span>
+        </a>
+      </div>
+
+      <!-- Right: Search + Buttons -->
+      <div class="flex items-center space-x-4">
+        <!-- Search -->
+        <div
+          class="relative text-gray-400 focus-within:text-orange-400 hidden sm:block"
+        >
+          <input
+            type="text"
+            placeholder="Search..."
+            class="bg-gray-800 text-sm rounded-full py-1.5 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300 w-32 focus:w-48"
+          />
+          <i
+            class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-orange-400"
+          ></i>
+        </div>
+
+        <!-- Buttons -->
+        <button
+          class="hidden sm:inline px-4 py-2 border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-black rounded-md text-sm transition-all duration-300"
+        >
+          Login
+        </button>
+        <button
+          class="hidden sm:inline px-4 py-2 bg-orange-500 hover:bg-orange-600 text-black font-semibold rounded-md text-sm transition-all duration-300"
+        >
+          Subscribe
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="menu-toggle" class="md:hidden text-orange-500">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden bg-gray-800 text-center py-4 space-y-2"
+  >
+    <a href="{%url 'home'%}" class="block text-white hover:text-orange-400">Home</a>
+    <a href="{%url 'stockpicker'%}" class="block text-white hover:text-orange-400">Stock Market</a>
+    <a href="{% url 'category' category='technology' %}" class="block text-white hover:text-orange-400">Technology</a>
+    <a href="{%url 'category' category='Politics' %}" class="block text-white hover:text-orange-400">Politics</a>
+    <a href="{%url 'category' category='Health' %}" class="block text-white hover:text-orange-400">Health</a>
+    <div class="flex justify-center gap-3 mt-2">
+      <button
+        class="px-4 py-1 border border-orange-400 text-orange-400 hover:bg-orange-500 hover:text-black rounded text-sm"
+      >
+        Login
+      </button>
+      <button
+        class="px-4 py-1 bg-orange-500 hover:bg-orange-600 text-black rounded text-sm"
+      >
+        Subscribe
+      </button>
+    </div>
+  </div>
 </nav>
-
-
-
-
-
-

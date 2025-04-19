@@ -28,15 +28,15 @@ class StockConsumer(AsyncWebsocketConsumer):
                 if x not in args:
                     args.append(x)
 
-            task.args = json.dumps([args])
+            task.args = json.dumps(args)
             task.save()
         else:
             schedule, _ = IntervalSchedule.objects.get_or_create(every=10, period=IntervalSchedule.SECONDS)
             PeriodicTask.objects.create(
                 interval=schedule,
                 name='every-10-seconds',
-                task="mainapp.tasks.update_stock",
-                args=json.dumps([stockpicker])
+                task="stockmarket.tasks.update_stock_prices",
+                args=json.dumps(stockpicker)
             )
 
     @sync_to_async

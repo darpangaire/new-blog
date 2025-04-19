@@ -4,6 +4,6 @@ from django.contrib.auth.models import User
 
 class StockDetails(models.Model):
   stock = models.CharField(max_length=255,unique=True)
-  user = models.ManyToManyField(User)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
   
   
