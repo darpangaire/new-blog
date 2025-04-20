@@ -19,12 +19,15 @@ from django.urls import path,include
 
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('post.urls')),
     path('',include('stockmarket.urls')),
+    path('accounts/',include('allauth.urls')),
+    path('logout/',views.logout_view,name='logout')
 ]
 
 

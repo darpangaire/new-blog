@@ -1,3 +1,4 @@
+{%load socialaccount%}
 <script src="https://cdn.tailwindcss.com"></script>
 <link
   rel="stylesheet"
@@ -83,11 +84,35 @@
         </div>
 
         <!-- Buttons -->
-        <button
+        {% if request.user.is_authenticated %}
+
+        <form action="{%url 'logout'%}" method="post">
+          {%csrf_token%}
+          <button
+            type="submit"
+            class="hidden sm:inline px-4 py-2 border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-black rounded-md text-sm transition-all duration-300"
+          >
+            Logout
+          </button>
+        </form>
+
+        {%else%}
+        <a
+          href="{% provider_login_url 'google' %}?next=/"
           class="hidden sm:inline px-4 py-2 border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-black rounded-md text-sm transition-all duration-300"
         >
           Login
-        </button>
+        </a>
+
+        <a
+          href="{% url 'account_signup' %}?next=/"
+          class="hidden sm:inline px-4 py-2 border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-black rounded-md text-sm transition-all duration-300"
+        >
+          Register
+        </a>
+
+        {%endif%}
+
         <button
           class="hidden sm:inline px-4 py-2 bg-orange-500 hover:bg-orange-600 text-black font-semibold rounded-md text-sm transition-all duration-300"
         >
@@ -107,17 +132,36 @@
     id="mobile-menu"
     class="md:hidden hidden bg-gray-800 text-center py-4 space-y-2"
   >
-    <a href="{%url 'home'%}" class="block text-white hover:text-orange-400">Home</a>
-    <a href="{%url 'stockpicker'%}" class="block text-white hover:text-orange-400">Stock Market</a>
-    <a href="{% url 'category' category='technology' %}" class="block text-white hover:text-orange-400">Technology</a>
-    <a href="{%url 'category' category='Politics' %}" class="block text-white hover:text-orange-400">Politics</a>
-    <a href="{%url 'category' category='Health' %}" class="block text-white hover:text-orange-400">Health</a>
+    <a href="{%url 'home'%}" class="block text-white hover:text-orange-400"
+      >Home</a
+    >
+    <a
+      href="{%url 'stockpicker'%}"
+      class="block text-white hover:text-orange-400"
+      >Stock Market</a
+    >
+    <a
+      href="{% url 'category' category='technology' %}"
+      class="block text-white hover:text-orange-400"
+      >Technology</a
+    >
+    <a
+      href="{%url 'category' category='Politics' %}"
+      class="block text-white hover:text-orange-400"
+      >Politics</a
+    >
+    <a
+      href="{%url 'category' category='Health' %}"
+      class="block text-white hover:text-orange-400"
+      >Health</a
+    >
     <div class="flex justify-center gap-3 mt-2">
-      <button
+      <a
+        href="{% provider_login_url 'google' %}?next=/"
         class="px-4 py-1 border border-orange-400 text-orange-400 hover:bg-orange-500 hover:text-black rounded text-sm"
       >
         Login
-      </button>
+      </a>
       <button
         class="px-4 py-1 bg-orange-500 hover:bg-orange-600 text-black rounded text-sm"
       >
