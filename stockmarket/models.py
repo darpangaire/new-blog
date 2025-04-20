@@ -6,4 +6,8 @@ class StockDetails(models.Model):
   stock = models.CharField(max_length=255,unique=True)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   
+  class Meta:
+    unique_together = ("user","stock")
+    
+  
   

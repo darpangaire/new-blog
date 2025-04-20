@@ -61,7 +61,7 @@ async def stocktracker_post(request: HttpRequest):
             results = await loop.run_in_executor(executor, lambda: list(map(fetch_data, selected_stocks)))
             stock_data = [data for data in results if data]
 
-    return render(request, 'stock/stocktracker.html', {
+    return await sync_to_async(render)(request, 'stock/stocktracker.html', {
         'stock_data': stock_data,
         'room_name': room_name,
         'stockpicker': selected_stocks
